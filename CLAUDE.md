@@ -13,7 +13,7 @@ monorepo baseline. Résumé parsing, LLM integration, persistence, admin UI, and
 
 ## Stack & key decisions (locked)
 
-- **Monorepo:** pnpm workspaces (Node 20 LTS in CI; local dev on 18.18+/20/22; pnpm 9.x via Corepack)
+- **Monorepo:** pnpm workspaces (Node 20 LTS in CI; local dev needs Node **≥20.9** — Next 16; pnpm `11.5.3` via Corepack)
 - **Web:** Next.js (App Router) + React, TypeScript strict — port **3000**
 - **API:** Node.js + Express, TypeScript strict — port **4000**
 - **Shared:** `packages/shared` TypeScript package
@@ -57,9 +57,9 @@ Target one workspace with `pnpm --filter <name> <script>`.
 1. README quickstart — **done**.
 2. Bootstrap pnpm workspace + shared tooling — **done**.
 3. Minimal runnable web + api; wire both to `packages/shared`; `.env.example` for both;
-   fail-fast env validation. **(next)**
+   fail-fast env validation — **done**.
 4. API `/healthz` + `/readyz` (200, JSON, no DB dep); request logging with correlation id and
-   no body/PII logging; redaction helper.
+   no body/PII logging; redaction helper. **(next)**
 5. Vitest + ≥1 passing test per workspace with coverage (synthetic fixtures only);
    `.gitlab-ci.yml` Node 20, `lint → test → build`.
 
@@ -72,9 +72,18 @@ Target one workspace with `pnpm --filter <name> <script>`.
   `pnpm -r run` (each package owns its own tooling). `pnpm -r run` skips packages missing a
   script, so partially-scaffolded steps don't break root commands.
 - **Shared package is consumed as TypeScript source** (`exports` → `./src/index.ts`,
-  Turborepo "just-in-time" pattern): no build-ordering friction. Web will use Next
-  `transpilePackages`; api dev uses a TS-aware runtime (e.g. `tsx`).
+  Turborepo "just-in-time" pattern): no build-ordering friction. Web uses Next
+  `transpilePackages: ['@resume-roast/shared']`; api dev uses `tsx`.
 - Per-package `tsconfig.json` all `extends @resume-roast/config/tsconfig.base.json`.
+- **API build = `tsup` (esbuild)**, not `tsc`: bundles the shared source so `dist/index.js`
+  is runnable. Strict typecheck stays with `tsc --noEmit` (esbuild strips types). API is split
+  `env.ts` / `app.ts` (createApp, no listen — Supertest-ready) / `index.ts` (listen + shutdown).
+- **Env validation (fail-fast, zod):** api `src/env.ts` (`loadEnv` → exit 1 on bad config);
+  web `src/env.mjs` imported by `next.config.mjs` (throws on bad config). Both have safe defaults.
+- **ESLint:** `no-console: warn` in the shared base (privacy guardrail; opt out locally for
+  sanctioned startup logs); root config adds Node/browser globals via `globals`.
+- **pnpm build approvals:** `esbuild` + `sharp` are allow-listed in `pnpm-workspace.yaml`
+  (`allowBuilds`); `@types/node` is in `minimumReleaseAgeExclude`.
 
 ## Workflow notes
 

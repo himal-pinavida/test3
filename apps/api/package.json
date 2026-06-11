@@ -1,0 +1,17 @@
+{
+  "name": "@resume-roast/api",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Express + TypeScript API for the AI Resume Roast Generator.",
+  "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {
+    "@resume-roast/shared": "workspace:*"
+  },
+  "devDependencies": {
+    "@resume-roast/config": "workspace:*",
+    "typescript": "6.0.3"
+  }
+}

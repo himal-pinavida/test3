@@ -1,0 +1,17 @@
+{
+  "name": "@resume-roast/web",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Next.js (App Router) web app for the AI Resume Roast Generator.",
+  "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {
+    "@resume-roast/shared": "workspace:*"
+  },
+  "devDependencies": {
+    "@resume-roast/config": "workspace:*",
+    "typescript": "6.0.3"
+  }
+}

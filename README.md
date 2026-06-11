@@ -10,16 +10,16 @@ weak phrasing, and unclear impact, followed by practical improvement tips.
 
 ## Tech stack
 
-| Area            | Choice                                              |
-| --------------- | --------------------------------------------------- |
-| Web app         | Next.js (App Router) + React, TypeScript strict     |
-| API             | Node.js + Express, TypeScript strict                |
-| Shared code     | TypeScript package (`packages/shared`)              |
-| Package manager | **pnpm** workspaces                                 |
-| Testing         | Vitest (+ React Testing Library, Supertest)         |
-| Lint / format   | ESLint + Prettier                                   |
-| CI/CD           | GitLab CI (Node 20 LTS) → lint → test → build       |
-| Hosting (later) | Render (Linux), managed PostgreSQL + Redis          |
+| Area            | Choice                                          |
+| --------------- | ----------------------------------------------- |
+| Web app         | Next.js (App Router) + React, TypeScript strict |
+| API             | Node.js + Express, TypeScript strict            |
+| Shared code     | TypeScript package (`packages/shared`)          |
+| Package manager | **pnpm** workspaces                             |
+| Testing         | Vitest (+ React Testing Library, Supertest)     |
+| Lint / format   | ESLint + Prettier                               |
+| CI/CD           | GitLab CI (Node 20 LTS) → lint → test → build   |
+| Hosting (later) | Render (Linux), managed PostgreSQL + Redis      |
 
 ---
 
@@ -44,8 +44,8 @@ weak phrasing, and unclear impact, followed by practical improvement tips.
 
 ## Prerequisites
 
-| Tool    | Version                                                                       |
-| ------- | ----------------------------------------------------------------------------- |
+| Tool    | Version                                                                        |
+| ------- | ------------------------------------------------------------------------------ |
 | Node.js | **20 LTS** (enforced in CI). Local development works on Node 18.18+, 20, or 22 |
 | pnpm    | **9.x** — easiest via Corepack (bundled with Node 16.13+)                      |
 
@@ -91,16 +91,16 @@ Once running:
 Run all of these from the **repository root**. Each one fans out across every workspace
 (`apps/web`, `apps/api`, `packages/shared`) unless noted.
 
-| Command              | What it does                                                            |
-| -------------------- | ----------------------------------------------------------------------- |
-| `pnpm install`       | Install dependencies for all workspaces                                 |
-| `pnpm dev`           | Start the web app (port 3000) and the API (port 4000) for development   |
-| `pnpm lint`          | Run ESLint across all workspaces                                        |
-| `pnpm format`        | Format the codebase with Prettier (writes changes)                      |
-| `pnpm format:check`  | Check formatting without writing changes (used in CI)                   |
-| `pnpm typecheck`     | Run TypeScript strict type-checking across all workspaces               |
-| `pnpm test`          | Run unit tests (Vitest) with coverage across all workspaces             |
-| `pnpm build`         | Production build of all workspaces                                      |
+| Command             | What it does                                                          |
+| ------------------- | --------------------------------------------------------------------- |
+| `pnpm install`      | Install dependencies for all workspaces                               |
+| `pnpm dev`          | Start the web app (port 3000) and the API (port 4000) for development |
+| `pnpm lint`         | Run ESLint across all workspaces                                      |
+| `pnpm format`       | Format the codebase with Prettier (writes changes)                    |
+| `pnpm format:check` | Check formatting without writing changes (used in CI)                 |
+| `pnpm typecheck`    | Run TypeScript strict type-checking across all workspaces             |
+| `pnpm test`         | Run unit tests (Vitest) with coverage across all workspaces           |
+| `pnpm build`        | Production build of all workspaces                                    |
 
 You can target a single workspace with pnpm's `--filter` flag, e.g.:
 

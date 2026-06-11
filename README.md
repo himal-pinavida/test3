@@ -44,10 +44,10 @@ weak phrasing, and unclear impact, followed by practical improvement tips.
 
 ## Prerequisites
 
-| Tool    | Version                                                                        |
-| ------- | ------------------------------------------------------------------------------ |
-| Node.js | **20 LTS** (enforced in CI). Local development works on Node 18.18+, 20, or 22 |
-| pnpm    | **9.x** — easiest via Corepack (bundled with Node 16.13+)                      |
+| Tool    | Version                                                                              |
+| ------- | ------------------------------------------------------------------------------------ |
+| Node.js | **20 LTS** (enforced in CI). Requires Node **≥ 20.9** locally (Next.js 16 minimum)   |
+| pnpm    | Managed via Corepack; the exact version is pinned in `package.json` `packageManager` |
 
 Enable pnpm through Corepack (no separate global install required):
 
@@ -59,8 +59,8 @@ corepack prepare pnpm@latest --activate
 Verify:
 
 ```bash
-node --version   # v20.x (or 18.18+/22.x locally)
-pnpm --version   # 9.x
+node --version   # v20.9+ (also works on 22.x locally)
+pnpm --version   # matches the pinned packageManager version
 ```
 
 ---

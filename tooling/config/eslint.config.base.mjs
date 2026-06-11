@@ -24,6 +24,9 @@ export const baseConfig = tseslint.config(
           caughtErrorsIgnorePattern: '^_',
         },
       ],
+      // Discourage stray console use (privacy guardrail); structured logging is
+      // the sanctioned path. Intentional startup diagnostics opt out locally.
+      'no-console': 'warn',
     },
   },
   // Keep Prettier last so it disables any conflicting formatting rules.

@@ -6,7 +6,7 @@
   "description": "AI Resume Roast Generator — monorepo root (pnpm workspaces).",
   "packageManager": "pnpm@11.5.3",
   "engines": {
-    "node": ">=18.18.0",
+    "node": ">=20.9.0",
     "pnpm": ">=9"
   },
   "scripts": {
@@ -22,6 +22,7 @@
   "devDependencies": {
     "@resume-roast/config": "workspace:*",
     "eslint": "10.4.1",
+    "globals": "16.5.0",
     "prettier": "3.8.4",
     "typescript": "6.0.3"
   }

@@ -5,13 +5,23 @@
   "type": "module",
   "description": "Next.js (App Router) web app for the AI Resume Roast Generator.",
   "scripts": {
+    "dev": "next dev -p 3000",
+    "build": "next build",
+    "start": "next start -p 3000",
     "typecheck": "tsc --noEmit -p tsconfig.json"
   },
   "dependencies": {
-    "@resume-roast/shared": "workspace:*"
+    "@resume-roast/shared": "workspace:*",
+    "next": "16.2.9",
+    "react": "19.2.7",
+    "react-dom": "19.2.7",
+    "zod": "4.4.3"
   },
   "devDependencies": {
     "@resume-roast/config": "workspace:*",
+    "@types/node": "25.9.3",
+    "@types/react": "19.2.17",
+    "@types/react-dom": "19.2.3",
     "typescript": "6.0.3"
   }
 }

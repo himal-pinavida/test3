@@ -2,21 +2,21 @@ import 'dotenv/config';
 
 import { createApp } from './app.js';
 import { loadEnv } from './env.js';
+import { createLogger } from './logger.js';
 
 /** Validate configuration first so misconfiguration fails fast at startup. */
 const env = loadEnv();
 
-const app = createApp();
+const logger = createLogger(env.LOG_LEVEL);
+const app = createApp({ version: env.APP_VERSION, logger });
 
 const server = app.listen(env.PORT, () => {
-  // eslint-disable-next-line no-console -- structured logging is introduced in Step 4
-  console.log(`API listening on http://localhost:${env.PORT} (${env.NODE_ENV})`);
+  logger.info({ port: env.PORT, env: env.NODE_ENV }, 'API listening');
 });
 
 /** Graceful shutdown so the dev loop and container orchestration stay clean. */
 const shutdown = (signal: string): void => {
-  // eslint-disable-next-line no-console -- structured logging is introduced in Step 4
-  console.log(`Received ${signal}, shutting down...`);
+  logger.info({ signal }, 'Shutting down');
   server.close(() => process.exit(0));
 };
 

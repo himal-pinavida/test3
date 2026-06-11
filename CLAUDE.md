@@ -59,9 +59,9 @@ Target one workspace with `pnpm --filter <name> <script>`.
 3. Minimal runnable web + api; wire both to `packages/shared`; `.env.example` for both;
    fail-fast env validation — **done**.
 4. API `/healthz` + `/readyz` (200, JSON, no DB dep); request logging with correlation id and
-   no body/PII logging; redaction helper. **(next)**
+   no body/PII logging; redaction helper — **done**.
 5. Vitest + ≥1 passing test per workspace with coverage (synthetic fixtures only);
-   `.gitlab-ci.yml` Node 20, `lint → test → build`.
+   `.gitlab-ci.yml` Node 20, `lint → test → build`. **(next)**
 
 ## Build & tooling notes (as built)
 
@@ -84,6 +84,14 @@ Target one workspace with `pnpm --filter <name> <script>`.
   sanctioned startup logs); root config adds Node/browser globals via `globals`.
 - **pnpm build approvals:** `esbuild` + `sharp` are allow-listed in `pnpm-workspace.yaml`
   (`allowBuilds`); `@types/node` is in `minimumReleaseAgeExclude`.
+- **API logging = `pino` + `pino-http`:** correlation id from inbound `x-request-id` or a
+  generated UUID (echoed on the response, attached as `req.id`); allow-list serializers log
+  only `{id, method, url}` / `{statusCode}` — never bodies/headers/user content. Health probes
+  excluded; logger silent under `NODE_ENV=test`. Health logic is pure fns in `src/health.ts`.
+- **Shared is a single-file entry (`src/index.ts`) on purpose:** it is consumed as TS source,
+  and **Turbopack does not rewrite a `.js` import specifier to a `.ts` file** (tsc, tsx, esbuild
+  do). Avoid intra-package relative imports in `shared` until a compiled build exists. Privacy
+  helpers `redactPII` / `scrubObject` / `REDACTED` live there.
 
 ## Workflow notes
 

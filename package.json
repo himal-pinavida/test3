@@ -1,0 +1,29 @@
+{
+  "name": "resume-roast-monorepo",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "AI Resume Roast Generator — monorepo root (pnpm workspaces).",
+  "packageManager": "pnpm@11.5.3",
+  "engines": {
+    "node": ">=20.9.0",
+    "pnpm": ">=9"
+  },
+  "scripts": {
+    "dev": "pnpm -r --parallel run dev",
+    "build": "pnpm -r run build",
+    "typecheck": "pnpm -r run typecheck",
+    "test": "pnpm -r run test",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "devDependencies": {
+    "@resume-roast/config": "workspace:*",
+    "eslint": "10.4.1",
+    "globals": "16.5.0",
+    "prettier": "3.8.4",
+    "typescript": "6.0.3"
+  }
+}

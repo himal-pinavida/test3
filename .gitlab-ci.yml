@@ -1,0 +1,58 @@
+# GitLab CI pipeline for the AI Resume Roast Generator monorepo.
+#
+# Stages run in order and any non-zero exit blocks the merge request:
+#   lint  — ESLint, Prettier check, and strict TypeScript type-checking
+#   test  — Vitest unit tests with coverage (per workspace)
+#   build — production builds of every workspace
+#
+# Targets Node 20 LTS, with pnpm provided via Corepack.
+
+stages:
+  - lint
+  - test
+  - build
+
+default:
+  image: node:20
+  cache:
+    key:
+      files:
+        - pnpm-lock.yaml
+    paths:
+      - .pnpm-store
+  before_script:
+    - corepack enable
+    - corepack prepare pnpm@11.5.3 --activate
+    - pnpm config set store-dir .pnpm-store
+    - pnpm install --frozen-lockfile
+
+variables:
+  # Skip Corepack's interactive download prompt in CI.
+  COREPACK_ENABLE_DOWNLOAD_PROMPT: '0'
+
+lint:
+  stage: lint
+  script:
+    - pnpm lint
+    - pnpm format:check
+    - pnpm typecheck
+
+test:
+  stage: test
+  script:
+    - pnpm test
+  # Extract an overall coverage number from Vitest's "All files" summary line.
+  coverage: '/All files\s*\|\s*([\d.]+)/'
+  artifacts:
+    when: always
+    paths:
+      - '**/coverage/'
+    reports:
+      coverage_report:
+        coverage_format: cobertura
+        path: '**/coverage/cobertura-coverage.xml'
+
+build:
+  stage: build
+  script:
+    - pnpm build

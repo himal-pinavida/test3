@@ -1,0 +1,54 @@
+# ---- Dependencies ----
+node_modules/
+.pnpm-store/
+.pnpm-debug.log*
+
+# ---- Build outputs ----
+dist/
+build/
+out/
+*.tsbuildinfo
+
+# ---- Next.js ----
+.next/
+next-env.d.ts
+
+# ---- Test / coverage ----
+coverage/
+.nyc_output/
+*.lcov
+
+# ---- Environment & secrets (NEVER commit real secrets or résumé/PII) ----
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# ---- Logs ----
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ---- Caches ----
+.cache/
+.turbo/
+.eslintcache
+
+# ---- OS files ----
+.DS_Store
+Thumbs.db
+
+# ---- IDE / editor ----
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# ---- Temp / uploads (untrusted files cleaned post-parse) ----
+tmp/
+temp/
+uploads/

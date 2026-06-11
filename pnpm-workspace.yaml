@@ -1,0 +1,14 @@
+packages:
+  - 'apps/*'
+  - 'packages/*'
+  - 'tooling/*'
+
+# Native packages allowed to run install/build scripts:
+#   esbuild — used by tsup to build the API
+#   sharp   — used by Next.js for image optimization
+allowBuilds:
+  esbuild: true
+  sharp: true
+
+minimumReleaseAgeExclude:
+  - '@types/node@25.9.3'

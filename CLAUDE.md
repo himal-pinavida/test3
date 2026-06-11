@@ -55,17 +55,31 @@ Target one workspace with `pnpm --filter <name> <script>`.
 ## Story 1 implementation steps
 
 1. README quickstart — **done**.
-2. Bootstrap pnpm workspace + shared tooling (manifests, strict tsconfigs, shared ESLint/Prettier,
-   root cross-workspace scripts).
+2. Bootstrap pnpm workspace + shared tooling — **done**.
 3. Minimal runnable web + api; wire both to `packages/shared`; `.env.example` for both;
-   fail-fast env validation.
+   fail-fast env validation. **(next)**
 4. API `/healthz` + `/readyz` (200, JSON, no DB dep); request logging with correlation id and
    no body/PII logging; redaction helper.
 5. Vitest + ≥1 passing test per workspace with coverage (synthetic fixtures only);
    `.gitlab-ci.yml` Node 20, `lint → test → build`.
 
+## Build & tooling notes (as built)
+
+- **Pinned versions:** TypeScript `6.0.3`, ESLint `10.4.1` (flat config only — no `.eslintrc`),
+  typescript-eslint `8.61.0`, Prettier `3.8.4`, pnpm `11.5.3` (`packageManager` field).
+- **Script orchestration:** `lint`/`format` are **root-centric** (root `eslint .` + `prettier`,
+  built on `@resume-roast/config`); `typecheck`/`build`/`test`/`dev` **fan out** via
+  `pnpm -r run` (each package owns its own tooling). `pnpm -r run` skips packages missing a
+  script, so partially-scaffolded steps don't break root commands.
+- **Shared package is consumed as TypeScript source** (`exports` → `./src/index.ts`,
+  Turborepo "just-in-time" pattern): no build-ordering friction. Web will use Next
+  `transpilePackages`; api dev uses a TS-aware runtime (e.g. `tsx`).
+- Per-package `tsconfig.json` all `extends @resume-roast/config/tsconfig.base.json`.
+
 ## Workflow notes
 
 - Branch: `feature/1-bootstrap-monorepo-project-structure-nextjs`.
 - Before opening an MR, run: `pnpm lint && pnpm format:check && pnpm typecheck && pnpm test && pnpm build`.
-- pnpm is provisioned via Corepack (`corepack enable`); it is not pre-installed in the container.
+- **pnpm location:** Corepack cannot symlink into `/usr/bin` in this container (EACCES). pnpm was
+  installed to `~/.local/bin` via `corepack enable --install-directory ~/.local/bin`. Prefix shell
+  commands with `export PATH="$HOME/.local/bin:$PATH"` (shell state does not persist between calls).

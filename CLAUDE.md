@@ -93,10 +93,11 @@ Target one workspace with `pnpm --filter <name> <script>`.
   do). Avoid intra-package relative imports in `shared` until a compiled build exists. Privacy
   helpers `redactPII` / `scrubObject` / `REDACTED` live there.
 - **Testing = Vitest 4 + `@vitest/coverage-v8`** per workspace (`test` = `vitest run --coverage`):
-  shared (node) redaction units, api (node) Supertest health/correlation-id, web (jsdom + RTL)
-  home page. Coverage reporters `text`/`lcov`/`cobertura`. Test files are **excluded from each
-  `tsconfig.json`** so `tsc`/`tsup`/`next build` never compile them (still ESLint-linted). All
-  fixtures are synthetic — never real résumé/PII.
+  shared (node) redaction units, api (node) Supertest health/correlation-id plus a log-safety
+  test that captures pino output and asserts bodies/sensitive headers are never logged, web
+  (jsdom + RTL) home page. Coverage reporters `text`/`lcov`/`cobertura`. Test files are
+  **excluded from each `tsconfig.json`** so `tsc`/`tsup`/`next build` never compile them (still
+  ESLint-linted). All fixtures are synthetic — never real résumé/PII.
 - **CI = `.gitlab-ci.yml`** (Node 20, pnpm via Corepack, store cached on `pnpm-lock.yaml`):
   `lint` (eslint + prettier check + tsc) → `test` (vitest + cobertura/lcov artifacts) →
   `build`. Non-zero exit blocks the MR.
